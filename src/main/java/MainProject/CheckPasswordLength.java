@@ -28,9 +28,10 @@ public class CheckPasswordLength {
      */
     public void measureConnectionWithDifferentLength(){
         timeMeasurements = new ArrayList<>();
+        timeMeasurements.add(0.0);
         String password = "a";
         for (int i=0; i<maxLength; i++){
-            String url = createUrl(this.baseUrl, this.username, password, 1);
+            String url = createUrl(this.baseUrl, this.username, password, 2);
             measureConnectionToGivenLength(url);
             password+="a";
         }
@@ -47,7 +48,7 @@ public class CheckPasswordLength {
 //        double totalTime = 0;
         try{
             TimeToConnect tmc = new TimeToConnect(tempURL);
-            for(int i=0;i<10;i++){
+            for(int i=0;i<200;i++){
                 double time = (Double) tmc.timeToConnect();
                 timeList.add(time);
 //                totalTime+=time;
@@ -56,7 +57,7 @@ public class CheckPasswordLength {
             e.printStackTrace();
             System.out.println("error measure time for url: "+ tempURL);
         }
-
+        Collections.sort(timeList);
         double totalMedianTime = (timeList.get(timeList.size()/2)+ timeList.get(timeList.size()/2-1))/2;
         System.out.println(totalMedianTime);
         timeMeasurements.add(totalMedianTime);

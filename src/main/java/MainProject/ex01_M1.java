@@ -13,27 +13,26 @@ import java.net.URL;
  */
 public class ex01_M1
 {
-    final static String URL = "http://aoi.ise.bgu.ac.il";
+
     public static void main( String[] args ) throws IOException {
-        System.out.println("Starting Main");
-//        testTimeToConnect();
-        testCheckPasswordLength();
+        String URL = args[0];
+        testTimeToConnect(URL);
+        //testCheckPasswordLength(URL);
     }
 
 
-    private static void testTimeToConnect() throws IOException {
+    private static void testTimeToConnect(String URL) throws IOException {
 
-        for (int i=0;i<1000;i++){
-            TimeToConnect tmc = new TimeToConnect(URL);
-            Double time = (Double) tmc.timeToConnect();
-            if (time>0){
-                System.out.println(time);
-            }
+        TimeToConnect tmc = new TimeToConnect(URL);
+        double time = tmc.measureMultipleTime();
+        System.out.println(time);
 
-        }
+
+
     }
+    /**
 
-    private static void testCheckPasswordLength() {
+    private static void testCheckPasswordLength(String URL) {
         CheckPasswordLength cpl = new CheckPasswordLength(URL, "204278931");
         cpl.measureConnectionWithDifferentLength();
         System.out.println("the length of the password is: "+ cpl.getLength());
@@ -46,7 +45,7 @@ public class ex01_M1
      * @param password - url of the site with user name and password
      * @return if the password that was given is correct
      * @throws IOException
-     */
+
     private static boolean isPasswordCorrect(String password) throws IOException  {
         String url = "http://aoi.ise.bgu.ac.il/?user=307832972&password=" + password + "&difficulty=1";
         HttpURLConnection connection;
@@ -76,6 +75,7 @@ public class ex01_M1
 
         return response.toString().equals("1");
     }
+    */
 
 }
 
