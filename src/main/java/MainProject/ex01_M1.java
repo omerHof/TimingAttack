@@ -22,8 +22,9 @@ public class ex01_M1
 
 
     private static void testTimeToConnect() throws IOException {
-        TimeToConnect tmc = new TimeToConnect(URL);
+
         for (int i=0;i<100;i++){
+            TimeToConnect tmc = new TimeToConnect(URL);
             Double time = (Double) tmc.timeToConnect();
             System.out.println(time.intValue());
         }
