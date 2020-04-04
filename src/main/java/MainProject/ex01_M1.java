@@ -16,17 +16,20 @@ public class ex01_M1
     final static String URL = "http://aoi.ise.bgu.ac.il\\";
     public static void main( String[] args ) throws IOException {
 
-        testTimeToConnect();
-        //testCheckPasswordLength();
+        //testTimeToConnect();
+        testCheckPasswordLength();
     }
 
 
     private static void testTimeToConnect() throws IOException {
 
-        for (int i=0;i<100;i++){
+        for (int i=0;i<1000;i++){
             TimeToConnect tmc = new TimeToConnect(URL);
             Double time = (Double) tmc.timeToConnect();
-            System.out.println(time.intValue());
+            if (time>0){
+                System.out.println(time.intValue());
+            }
+
         }
     }
 

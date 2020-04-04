@@ -12,6 +12,7 @@ public class CheckPasswordLength {
 
     public CheckPasswordLength(String url) {
         this.URL = url+"?user=307832972&password=";
+        //String.format()
         timeMeasurements = new ArrayList<>();
     }
 
@@ -23,7 +24,7 @@ public class CheckPasswordLength {
 
         String tempURL = URL;
 
-        for (int i=0;i<maxLength;i++){
+        for (int i=20;i<maxLength;i++){
             measureConnectionToGivenLength(tempURL);
             tempURL+="a";
         }
@@ -36,18 +37,25 @@ public class CheckPasswordLength {
      */
 
     private void measureConnectionToGivenLength(String tempURL) {
-        double totalTime = 0;
+        ArrayList<Double> tempArr= new ArrayList<>();
+        double totalMeanTime = 0;
         try{
 
-            for(int i=0;i<50;i++){
+            for(int i=0;i<100;i++){
                 TimeToConnect tmc = new TimeToConnect(tempURL);
-                totalTime+= (Double) tmc.timeToConnect();
+                double time = (Double) tmc.timeToConnect();
+                if(time>0){
+                    tempArr.add(time);
+                    totalMeanTime+=time;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("error measure time for url: "+ tempURL);
         }
-        timeMeasurements.add(totalTime);
+
+        totalMeanTime = totalMeanTime/tempArr.size();
+        timeMeasurements.add(totalMeanTime);
     }
 
     /**
@@ -55,6 +63,9 @@ public class CheckPasswordLength {
      * @return the index of max value in timeMeasurements array ==> the length of the password.
      */
     public int getLength(){
+        for (double d: timeMeasurements){
+            System.out.println(d);
+        }
         double maxValue=  Collections.max(timeMeasurements);
         System.out.println("The max time of measurement is "+maxValue );
         return timeMeasurements.indexOf(maxValue);
