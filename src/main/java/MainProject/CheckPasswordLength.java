@@ -22,9 +22,9 @@ public class CheckPasswordLength {
      */
     public void measureConnectionWithDifferentLength(){
 
-        String tempURL = URL;
+        String tempURL = URL+"a";
 
-        for (int i=20;i<maxLength;i++){
+        for (int i=1;i<maxLength;i++){
             measureConnectionToGivenLength(tempURL);
             tempURL+="a";
         }
@@ -55,7 +55,8 @@ public class CheckPasswordLength {
         }
 
         totalMeanTime = totalMeanTime/tempArr.size();
-        timeMeasurements.add(totalMeanTime);
+        double totalMedianTime = (tempArr.get(tempArr.size()/2)+ tempArr.get(tempArr.size()/2-1))/2;
+        timeMeasurements.add(totalMedianTime);
     }
 
     /**
