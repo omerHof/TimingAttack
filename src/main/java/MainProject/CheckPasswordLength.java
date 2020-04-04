@@ -6,14 +6,20 @@ import java.util.Collections;
 
 public class CheckPasswordLength {
 
-    private String URL;
+    private String baseUrl;
+    private String username;
     private ArrayList<Double> timeMeasurements;
     private final int maxLength = 32;
 
-    public CheckPasswordLength(String url) {
-        this.URL = url+"?user=307832972&password=";
-        //String.format()
-        timeMeasurements = new ArrayList<>();
+    public CheckPasswordLength(String baseUrl, String username) {
+        this.baseUrl = baseUrl;
+        this.username = username;
+    }
+
+    private String createUrl(String baseUrl, String username, String password, Integer difficulty){
+        String url_format = baseUrl + "\\?user=%s\\&password=%s\\&difficulty=%d";
+        String url = String.format(url_format,username, password, difficulty);
+        return url;
     }
 
     /**
@@ -21,12 +27,12 @@ public class CheckPasswordLength {
      * fill the ArrayList with sum of times off all length
      */
     public void measureConnectionWithDifferentLength(){
-
-        String tempURL = URL+"a";
-
-        for (int i=1;i<maxLength;i++){
-            measureConnectionToGivenLength(tempURL);
-            tempURL+="a";
+        timeMeasurements = new ArrayList<>();
+        String password = "a";
+        for (int i=0; i<maxLength; i++){
+            String url = createUrl(this.baseUrl, this.username, password, 1);
+            measureConnectionToGivenLength(url);
+            password+="a";
         }
     }
 
@@ -37,25 +43,22 @@ public class CheckPasswordLength {
      */
 
     private void measureConnectionToGivenLength(String tempURL) {
-        ArrayList<Double> tempArr= new ArrayList<>();
-        double totalMeanTime = 0;
+        ArrayList<Double> timeList= new ArrayList<>();
+//        double totalTime = 0;
         try{
-
-            for(int i=0;i<100;i++){
-                TimeToConnect tmc = new TimeToConnect(tempURL);
+            TimeToConnect tmc = new TimeToConnect(tempURL);
+            for(int i=0;i<10;i++){
                 double time = (Double) tmc.timeToConnect();
-                if(time>0){
-                    tempArr.add(time);
-                    totalMeanTime+=time;
-                }
+                timeList.add(time);
+//                totalTime+=time;
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("error measure time for url: "+ tempURL);
         }
 
-        totalMeanTime = totalMeanTime/tempArr.size();
-        double totalMedianTime = (tempArr.get(tempArr.size()/2)+ tempArr.get(tempArr.size()/2-1))/2;
+        double totalMedianTime = (timeList.get(timeList.size()/2)+ timeList.get(timeList.size()/2-1))/2;
+        System.out.println(totalMedianTime);
         timeMeasurements.add(totalMedianTime);
     }
 

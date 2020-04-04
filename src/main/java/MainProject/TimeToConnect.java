@@ -17,14 +17,15 @@ public class TimeToConnect {
 
 
     public TimeToConnect(String url) throws IOException {
+
         this.url = url;
         String command ="curl -skw %{time_total} -o - "+this.url;
-        this.processBuilder = new ProcessBuilder(command.split(" "));
-        this.p = processBuilder.start();
+        this.processBuilder = new ProcessBuilder(command.split(" ")).redirectErrorStream(true);
 
     }
 
-    public Serializable timeToConnect(){
+    public Serializable timeToConnect() throws IOException {
+        this.p = this.processBuilder.start();
         InputStream is = p.getInputStream();
         this.processBuilder.redirectErrorStream(true);
         Scanner s = new Scanner(is).useDelimiter("\\A");
